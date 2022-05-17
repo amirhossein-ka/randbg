@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-const TestDirPath = "./testdir/"
+const TestDirPath = "./testdata/"
 
 func TestDirContent(t *testing.T) {
 	type want struct {
