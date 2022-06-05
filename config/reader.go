@@ -10,7 +10,7 @@ import (
 
 var ErrInvalidFileExtension = errors.New("invalid config file extension. supported extensions are: .yml|.yaml and .json")
 
-func Parse(path string, cfg *Config) error {
+func Parse(path string, cfg *DaemonConfig) error {
 	switch filepath.Ext(path) {
 	case ".json":
 		return parseJson(path, cfg)
@@ -21,7 +21,7 @@ func Parse(path string, cfg *Config) error {
 	}
 }
 
-func parseYaml(path string, cfg *Config) error {
+func parseYaml(path string, cfg *DaemonConfig) error {
 	file, err := os.Open(path)
 	if err != nil {
 		return err
@@ -30,7 +30,7 @@ func parseYaml(path string, cfg *Config) error {
 	return yaml.NewDecoder(file).Decode(cfg)
 }
 
-func parseJson(path string, cfg *Config) error {
+func parseJson(path string, cfg *DaemonConfig) error {
 	file, err := os.Open(path)
 	if err != nil {
 		return err

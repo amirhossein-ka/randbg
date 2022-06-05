@@ -1,5 +1,4 @@
 {
-    "config": {
-               
-    }
+    "img_directory": "$HOME/.test_dir",
+    "interval": "23m10s"
 }

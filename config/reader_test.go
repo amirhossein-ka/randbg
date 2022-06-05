@@ -7,7 +7,7 @@ const TestData = "./testdata/"
 func TestParse(t *testing.T) {
 	type args struct {
 		Path string
-		Cfg  *Config
+		Cfg  *DaemonConfig
 	}
 
 	tests := []struct {
@@ -19,7 +19,7 @@ func TestParse(t *testing.T) {
 			Name: "json file",
 			Args: args{
 				Path: TestData + "test_cfg.json",
-				Cfg:  &Config{},
+				Cfg:  &DaemonConfig{},
 			},
 			WantErr: false,
 		},
@@ -27,7 +27,7 @@ func TestParse(t *testing.T) {
 			Name: "yaml file",
 			Args: args{
 				Path: TestData + "test_cfg.yaml",
-				Cfg:  &Config{},
+				Cfg:  &DaemonConfig{},
 			},
 			WantErr: false,
 		},
@@ -35,7 +35,7 @@ func TestParse(t *testing.T) {
 			Name: "yml file",
 			Args: args{
 				Path: TestData + "test_cfg.yml",
-				Cfg:  &Config{},
+				Cfg:  &DaemonConfig{},
 			},
 			WantErr: false,
 		},
@@ -43,7 +43,7 @@ func TestParse(t *testing.T) {
 			Name: "Unknown file extension",
 			Args: args{
 				Path: TestData + "test_cfg.xxx",
-				Cfg:  &Config{},
+				Cfg:  &DaemonConfig{},
 			},
 			WantErr: true,
 		},

@@ -1,1 +1,2 @@
-config:
+img_directory: "$HOME/.wallpapers"
+interval: "10m30s"
