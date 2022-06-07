@@ -1,17 +1,25 @@
 package main
 
 import (
+	"context"
+	"flag"
 	"fmt"
 	"github.com/amirhossein-ka/randbg/config"
+	"github.com/amirhossein-ka/randbg/lib"
 	"log"
 	"os"
 	"path/filepath"
+	"time"
 )
 
-var cfg config.DaemonConfig
+var (
+	cfg config.DaemonConfig
+)
 
 func parseAll(cfg *config.DaemonConfig) error {
-	ParseFlags()
+	if !flag.Parsed() {
+		ParseFlags()
+	}
 	if configPath != "" {
 		if err := config.Parse(configPath, cfg); err != nil {
 			return err
@@ -46,6 +54,30 @@ func init() {
 }
 
 func main() {
-	fmt.Println("Hello World !")
+	ctx, cancel := context.WithCancel(context.Background())
+	defer func() {
+		cancel()
+	}()
 	fmt.Printf("%#v\n", cfg)
+	go handleSignals()
+
+	pics, err := lib.DirContent(cfg.ImgDirectory)
+	if err != nil {
+		log.Fatalln(err, cfg.ImgDirectory)
+	}
+
+	if err = lib.ChangeWall(ctx, pics); err != nil {
+		panic(err)
+	}
+	for {
+		select {
+		case <-time.Tick(time.Duration(cfg.Interval)):
+			if err := lib.ChangeWall(ctx, pics); err != nil {
+				panic(err)
+			}
+		case <-ctx.Done():
+			log.Println("context done ??? stopping...")
+			cancel()
+		}
+	}
 }
