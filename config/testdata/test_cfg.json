@@ -1,4 +1,12 @@
 {
-    "img_directory": "$HOME/.test_dir",
-    "interval": "23m10s"
+    "daemon_config": {
+        "img_directory": "$HOME/.test_dir",
+        "interval": "10s",
+        "pid_file": "/pid.pid",
+        "socket_file": "/sock.sock"
+    },
+    "cmd_config": {
+        "pid_file": "/pid.pid",
+        "socket_file": "/sock.sock"
+    }
 }

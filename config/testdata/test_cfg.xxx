@@ -1,0 +1,7 @@
+daemon_config:
+  img_directory: "$HOME/.wallpapers"
+  interval: "10m30s"
+
+cmd_config:
+  pid_file: "xx.pid"
+  socket_file: "xx.sock"

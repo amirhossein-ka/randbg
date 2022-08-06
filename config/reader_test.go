@@ -1,13 +1,16 @@
 package config
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 const TestData = "./testdata/"
 
 func TestParse(t *testing.T) {
 	type args struct {
 		Path string
-		Cfg  *DaemonConfig
+		Cfg  *Config
 	}
 
 	tests := []struct {
@@ -19,7 +22,7 @@ func TestParse(t *testing.T) {
 			Name: "json file",
 			Args: args{
 				Path: TestData + "test_cfg.json",
-				Cfg:  &DaemonConfig{},
+				Cfg:  &Config{},
 			},
 			WantErr: false,
 		},
@@ -27,7 +30,7 @@ func TestParse(t *testing.T) {
 			Name: "yaml file",
 			Args: args{
 				Path: TestData + "test_cfg.yaml",
-				Cfg:  &DaemonConfig{},
+				Cfg:  &Config{},
 			},
 			WantErr: false,
 		},
@@ -35,7 +38,7 @@ func TestParse(t *testing.T) {
 			Name: "yml file",
 			Args: args{
 				Path: TestData + "test_cfg.yml",
-				Cfg:  &DaemonConfig{},
+				Cfg:  &Config{},
 			},
 			WantErr: false,
 		},
@@ -43,9 +46,17 @@ func TestParse(t *testing.T) {
 			Name: "Unknown file extension",
 			Args: args{
 				Path: TestData + "test_cfg.xxx",
-				Cfg:  &DaemonConfig{},
+				Cfg:  &Config{},
 			},
 			WantErr: true,
+		},
+		{
+			Name: "Does not exists",
+			Args: args{
+				Path: TestData + "doesnotexists.yaml",
+				Cfg:  &Config{},
+			},
+			WantErr: false,
 		},
 	}
 
@@ -55,6 +66,7 @@ func TestParse(t *testing.T) {
 			if (err != nil) != test.WantErr {
 				tt.Errorf("Parse(): wantErr: %v, got: %v\n", test.WantErr, err)
 			}
+			fmt.Printf("%+v", test.Args.Cfg)
 		})
 	}
 }

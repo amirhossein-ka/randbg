@@ -2,6 +2,8 @@ package main
 
 import (
 	"flag"
+	"github.com/amirhossein-ka/randbg/config"
+
 	// "log"
 	// "os"
 	// "path/filepath"
@@ -22,13 +24,13 @@ var (
 func ParseFlags() {
 	// short
 	flag.StringVar(&configPath, "c", "", "path to config file, default to USER_CONF_DIR/randbg/config.yml (shorthand)")
-	flag.StringVar(&backgroundPath, "p", defaultWallPath, "path to wallpaper directory (shorthand)")
-	flag.DurationVar(&interval, "i", defaultInterval, "interval of changing of wallpapers in minutes.")
+	flag.StringVar(&backgroundPath, "p", config.DefaultBackgroundPath, "path to wallpaper directory (shorthand)")
+	flag.DurationVar(&interval, "i", config.DefaultInterval, "interval of changing of wallpapers in minutes.")
 
 	// long
 	flag.StringVar(&configPath, "config", "", "path to config file, default to USER_CONF_DIR/randbg/config.yml")
-	flag.StringVar(&backgroundPath, "path", defaultWallPath, "path to wallpaper directory ")
-	flag.DurationVar(&interval, "interval", defaultInterval, "interval of changing of wallpapers in minutes.")
+	flag.StringVar(&backgroundPath, "path", config.DefaultBackgroundPath, "path to wallpaper directory ")
+	flag.DurationVar(&interval, "interval", config.DefaultInterval, "interval of changing of wallpapers in minutes.")
 	flag.Parse()
 
 }

@@ -13,10 +13,10 @@ import (
 )
 
 var (
-	cfg config.DaemonConfig
+	cfg config.Config
 )
 
-func parseAll(cfg *config.DaemonConfig) error {
+func parseAll(cfg *config.Config) error {
 	if !flag.Parsed() {
 		ParseFlags()
 	}
@@ -38,12 +38,12 @@ func parseAll(cfg *config.DaemonConfig) error {
 	return nil
 }
 
-func setFlags(cfg *config.DaemonConfig) {
-	if interval != 0 && interval != defaultInterval {
-		cfg.Interval = config.Duration(interval)
+func setFlags(cfg *config.Config) {
+	if interval != 0 && interval != config.DefaultInterval {
+		cfg.DaemonConfig.Interval = config.Duration(interval)
 	}
-	if backgroundPath != "" && backgroundPath != defaultWallPath {
-		cfg.ImgDirectory = backgroundPath
+	if backgroundPath != "" && backgroundPath != config.DefaultBackgroundPath {
+		cfg.DaemonConfig.ImgDirectory = backgroundPath
 	}
 }
 
@@ -61,17 +61,19 @@ func main() {
 	fmt.Printf("%#v\n", cfg)
 	go handleSignals()
 
-	pics, err := lib.DirContent(cfg.ImgDirectory)
+	pics, err := lib.DirContent(cfg.DaemonConfig.ImgDirectory)
 	if err != nil {
-		log.Fatalln(err, cfg.ImgDirectory)
+		log.Fatalln(err, cfg.DaemonConfig.ImgDirectory)
 	}
 
 	if err = lib.ChangeWall(ctx, pics); err != nil {
 		panic(err)
 	}
+	// _ = pics
+
 	for {
 		select {
-		case <-time.Tick(time.Duration(cfg.Interval)):
+		case <-time.Tick(time.Duration(cfg.DaemonConfig.Interval)):
 			if err := lib.ChangeWall(ctx, pics); err != nil {
 				panic(err)
 			}
