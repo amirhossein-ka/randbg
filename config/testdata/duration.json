@@ -1,0 +1,5 @@
+{
+  "daemon_config": {
+    "interval": "10m"
+  }
+}

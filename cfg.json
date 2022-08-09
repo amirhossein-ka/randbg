@@ -1,0 +1,6 @@
+{
+  "daemon_config": {
+    "interval": "20s",
+    "img_directory": "/home/ami/Pictures/wallpaper/"
+  }
+}

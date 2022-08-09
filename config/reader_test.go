@@ -58,6 +58,14 @@ func TestParse(t *testing.T) {
 			},
 			WantErr: false,
 		},
+		{
+			Name: "Parse duration from json",
+			Args: args{
+				Path: TestData + "duration.json",
+				Cfg: &Config{},
+			},
+			WantErr: false,
+		},
 	}
 
 	for _, test := range tests {

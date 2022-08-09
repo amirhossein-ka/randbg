@@ -24,6 +24,7 @@ func Parse(path string, cfg *Config) error {
 }
 
 func parseYaml(path string, cfg *Config) error {
+	// file, err := os.OpenFile(path, os.O_CREATE|os.O_RDONLY, 0644)
 	file, err := os.Open(path)
 	if err != nil {
 		if errors.Is(err, fs.ErrNotExist) {
