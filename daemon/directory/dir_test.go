@@ -16,9 +16,8 @@ func TestDirContent(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	
-	os.Setenv("HERE", filepath.Dir(exepath))
 
+	os.Setenv("HERE", filepath.Dir(exepath))
 
 	type want struct {
 		content  []string

@@ -1,28 +1,30 @@
 package main
 
 import (
+	"github.com/amirhossein-ka/randbg/args"
 	"github.com/amirhossein-ka/randbg/config"
-	"github.com/amirhossein-ka/randbg/daemon"
 	"log"
 	"os"
 )
 
-var cfg = &config.Config{}
-
-const CfgPath = "./cfg.json"
+var (
+	cfg = &config.Config{}
+	arg = &args.Args{}
+)
 
 func init() {
 	log.SetOutput(os.Stdout)
-	if err := config.Parse(CfgPath, cfg); err != nil {
+
+	if err := arg.Init(os.Args); err != nil {
+		log.Fatalln(err)
+	}
+	if err := config.Parse(arg.DaemonArgs.ConfigPath, cfg); err != nil {
 		log.Fatalln(err)
 	}
 }
 
 func main() {
-	log.Printf("%#v\n", cfg)
-	dmn,err := daemon.New(cfg)
-	if err != nil {
+	if err := arg.RunApp(cfg); err != nil {
 		log.Fatalln(err)
 	}
-	dmn.Run()
 }

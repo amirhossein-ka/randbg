@@ -18,7 +18,7 @@ func (d *Daemon) handleSignals() {
 		case <-d.stop:
 			return
 		case sig := <-sigChan:
-			switch sig{
+			switch sig {
 			case syscall.SIGTERM, syscall.SIGINT:
 				d.sigint()
 			}
@@ -34,7 +34,7 @@ func (d *Daemon) sigint() {
 func (d *Daemon) sighup() {
 	log.Println("received SIGHUP, reloading config and image directory content...")
 	// Todo add a args struct for saving this stuff to avoid hard coding
-	if err := config.Parse("./cfg.json", d.cfg); err != nil {
+	if err := config.Parse("", d.cfg); err != nil {
 		panic(fmt.Sprintf("an error occurred while reloading configuration: %v\n", err.Error()))
 	}
 

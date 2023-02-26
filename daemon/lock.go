@@ -28,7 +28,6 @@ func (d *Daemon) lock() {
 	}
 }
 
-
 // unlock removes lockfile from LockFile
 func (d *Daemon) unlock() {
 	err := os.Remove(LockFile)

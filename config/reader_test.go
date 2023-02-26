@@ -62,7 +62,7 @@ func TestParse(t *testing.T) {
 			Name: "Parse duration from json",
 			Args: args{
 				Path: TestData + "duration.json",
-				Cfg: &Config{},
+				Cfg:  &Config{},
 			},
 			WantErr: false,
 		},

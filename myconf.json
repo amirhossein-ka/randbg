@@ -1,0 +1,6 @@
+{
+  "daemon_config": {
+    "img_directory": "/home/amir/Pictures/Wallpapers/",
+    "interval": "10s"
+  }
+}

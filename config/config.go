@@ -7,6 +7,6 @@ type (
 
 	DaemonConfig struct {
 		ImgDirectory string   `json:"image_directory,omitempty" yaml:"img_directory"`
-        Interval     Duration `json:"interval,omitempty" yaml:"interval"`
-    }
+		Interval     Duration `json:"interval,omitempty" yaml:"interval"`
+	}
 )

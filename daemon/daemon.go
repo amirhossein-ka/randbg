@@ -1,22 +1,26 @@
 package daemon
 
 import (
+	"log"
+	"os"
+	"time"
+
 	"github.com/amirhossein-ka/randbg/config"
 	"github.com/amirhossein-ka/randbg/daemon/directory"
 	"github.com/amirhossein-ka/randbg/daemon/wallpaper"
-	"log"
-	"time"
 )
 
 type Daemon struct {
+	stop     chan struct{}
 	cfg      *config.Config
-	images   []string
 	interval time.Duration
 	timer    *time.Timer
-	stop     chan struct{}
+	CfgPath  string
+	images   []string
 }
 
 func New(cfg *config.Config) (*Daemon, error) {
+
 	var err error
 	stop := make(chan struct{})
 	interval := time.Duration(cfg.DaemonConfig.Interval)
@@ -41,6 +45,10 @@ func (d *Daemon) Run() {
 	d.lock()
 	defer d.unlock()
 
+	if err := CreatePid(os.Getpid()); err != nil {
+		log.Printf("cant create pid file due err:%v, most of feature will not work\n", err)
+	}
+
 	go d.handleSignals()
 	go d.setWall()
 
@@ -51,9 +59,17 @@ func (d *Daemon) setWall() {
 	pics, err := directory.DirContent(d.cfg.DaemonConfig.ImgDirectory)
 	if err != nil {
 		log.Printf("an error occurred while loading image directory content: %v\n", err.Error())
-		d.stop<- struct{}{}
+		d.stop <- struct{}{}
+		return
 	}
 	d.images = pics
+
+	if err = wallpaper.ChangeWall(d.images); err != nil {
+		log.Printf("an error occured while changing wallpaper: %v\n", err.Error())
+		d.stop <- struct{}{}
+		return
+	}
+
 	for {
 		select {
 		case <-d.stop:
@@ -61,7 +77,7 @@ func (d *Daemon) setWall() {
 		case <-d.timer.C:
 			if err = wallpaper.ChangeWall(d.images); err != nil {
 				log.Printf("an error occured while changing wallpaper: %v\n", err.Error())
-				d.stop<- struct{}{}
+				d.stop <- struct{}{}
 			}
 			d.timer.Reset(d.interval)
 		}

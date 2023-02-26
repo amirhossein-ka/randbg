@@ -11,6 +11,7 @@ import (
 )
 
 var ErrInvalidFileExtension = errors.New("invalid config file extension. supported extensions are: .yml|.yaml and .json")
+const configNotFound string = "config file does not exists, using default values. (flags will overwrite configs)"
 
 func Parse(path string, cfg *Config) error {
 	switch filepath.Ext(path) {
@@ -29,7 +30,7 @@ func parseYaml(path string, cfg *Config) error {
 	if err != nil {
 		if errors.Is(err, fs.ErrNotExist) {
 			setDefaults(cfg)
-			log.Println("config file does not exists, using default values. (flags will overwrite configs)")
+			log.Println(configNotFound)
 			return nil
 		}
 		return err
@@ -45,7 +46,7 @@ func parseJson(path string, cfg *Config) error {
 	if err != nil {
 		if errors.Is(err, fs.ErrNotExist) {
 			setDefaults(cfg)
-			log.Println("config file does not exists, using default values. (flags will overwrite configs)")
+			log.Println(configNotFound)
 			return nil
 		}
 		return err
